@@ -79,3 +79,16 @@ http://<IP_PUBLICO_DA_VM>:8080/motos/listar/todos
 - Assegure que os scripts .sh tenham permissão de execução (chmod 744).
 
 - O deploy completo é feito com apenas dois scripts e alguns comandos simples, garantindo portabilidade e agilidade.
+
+## 🧹 Remover Recursos da Azure
+
+Após finalizar os testes ou demonstrações, é recomendável remover os recursos da Azure para evitar cobranças adicionais.
+
+### 1. Remover a Máquina Virtual e o Grupo de Recursos
+
+Execute o seguinte comando no Azure CLI para deletar tudo de uma vez:
+
+```bash
+az group delete --name mototrack-rg --yes --no-wait
+```
+Esse comando exclui o grupo de recursos `mototrack-rg` e todos os recursos associados, como a VM, IP público e disco.
