@@ -28,10 +28,10 @@ public class Moto {
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @OneToMany(mappedBy = "moto")
+    @OneToMany(mappedBy = "moto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Movimentacao> movimentacoes;
 
-    @OneToMany(mappedBy = "moto")
+    @OneToMany(mappedBy = "moto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alerta> alertas;
 
     public Moto() {
