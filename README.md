@@ -92,3 +92,9 @@ Execute o seguinte comando no Azure CLI para deletar tudo de uma vez:
 az group delete --name mototrack-rg --yes --no-wait
 ```
 Esse comando exclui o grupo de recursos `mototrack-rg` e todos os recursos associados, como a VM, IP público e disco.
+
+## 📹 Vídeo com o tutorial
+
+Veja o vídeo com todo o passo a passo para rodar o projeto:
+
+📽️ [Clique aqui para assistir o vídeo](https://www.youtube.com/watch?v=roGbii7zV0Q)
