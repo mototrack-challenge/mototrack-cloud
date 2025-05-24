@@ -23,7 +23,7 @@ public class Alerta {
     @Column(name = "data_alerta", nullable = false)
     private LocalDateTime dataAlerta;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moto_id")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Moto moto;

@@ -28,10 +28,12 @@ public class Moto {
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @OneToMany(mappedBy = "moto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "moto", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    @OrderBy("timestamp ASC")
     private List<Movimentacao> movimentacoes;
 
-    @OneToMany(mappedBy = "moto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "moto", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    @OrderBy("dataAlerta ASC")
     private List<Alerta> alertas;
 
     public Moto() {
