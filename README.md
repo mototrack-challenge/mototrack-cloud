@@ -95,6 +95,6 @@ Esse comando exclui o grupo de recursos `mototrack-rg` e todos os recursos assoc
 
 ## 📹 Vídeo com o tutorial
 
-Veja o vídeo com todo o passo a passo para rodar o projeto:
+Se você teve dificuldades para entender o passo a passo escrito ou prefere um guia mais visual, assista ao vídeo abaixo. Nele, explicamos todo o processo de forma prática e detalhada:
 
-📽️ [Clique aqui para assistir o vídeo](https://www.youtube.com/watch?v=roGbii7zV0Q)
+📽️ [Clique aqui para assistir o vídeo](https://www.youtube.com/watch?v=SL4UYwfVDDo)
