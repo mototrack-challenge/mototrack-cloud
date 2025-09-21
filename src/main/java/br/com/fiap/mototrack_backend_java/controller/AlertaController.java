@@ -1,52 +1,49 @@
 package br.com.fiap.mototrack_backend_java.controller;
 
-import br.com.fiap.mototrack_backend_java.dto.AlertaDTO;
-import br.com.fiap.mototrack_backend_java.mapper.AlertaMapper;
+import br.com.fiap.mototrack_backend_java.dto.AlertaRequestDTO;
 import br.com.fiap.mototrack_backend_java.model.Alerta;
 import br.com.fiap.mototrack_backend_java.service.AlertaService;
-import jakarta.validation.Valid;
+import br.com.fiap.mototrack_backend_java.service.MotoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@RestController
+@Controller
 @RequestMapping("/alertas")
 public class AlertaController {
 
-    private final AlertaService service;
+    @Autowired
+    private AlertaService alertaService;
 
-    public AlertaController(AlertaService service) {
-        this.service = service;
+    @Autowired
+    private MotoService motoService;
+
+    @GetMapping("/moto/{id}")
+    public String listarPorMoto(@PathVariable("id") Long idMoto, Model model) {
+        var alertas = alertaService.buscarAlertasPorIdDaMoto(idMoto);
+        var moto = motoService.buscarPorId(idMoto);
+
+        model.addAttribute("alertas", alertas);
+        model.addAttribute("moto", moto);
+        return "alertas";
     }
 
-    @GetMapping("/listar/todos")
-    public List<AlertaDTO> lisarTodos() {
-        return service.listarTodos()
-                .stream()
-                .map(AlertaMapper::toDTO)
-                .collect(Collectors.toList());
+    @PostMapping("/cadastrar")
+    public String cadastrarAlerta(@ModelAttribute AlertaRequestDTO alerta) {
+        Alerta alertaSalvo = alertaService.salvar(alerta);
+        Long motoId = alertaSalvo.getMoto().getId();
+
+        return "redirect:/alertas/moto/" + motoId;
     }
 
-    @GetMapping("/listar/{id}")
-    public AlertaDTO buscarPorId(@PathVariable Long id) {
-        return AlertaMapper.toDTO(service.buscarPorId(id));
-    }
-
-    @PostMapping("/salvar")
-    public AlertaDTO salvar(@RequestBody @Valid AlertaDTO dto) {
-        return AlertaMapper.toDTO(service.salvar(AlertaMapper.toEntity(dto)));
-    }
-
-    @PutMapping("/atualizar/{id}")
-    public AlertaDTO atualizar(@PathVariable Long id, @RequestBody @Valid AlertaDTO dto) {
-        Alerta alerta = AlertaMapper.toEntity(dto);
-        alerta.setId(id);
-        return AlertaMapper.toDTO(service.atualizar(id,alerta));
-    }
-
-    @DeleteMapping("/deletar/{id}")
+    @GetMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id) {
-        return service.deletar(id);
+        var alerta = alertaService.buscarPorId(id);
+        Long motoId = alerta.getMoto().getId();
+
+        alertaService.deletar(id);
+
+        return "redirect:/alertas/moto/" + motoId;
     }
 }

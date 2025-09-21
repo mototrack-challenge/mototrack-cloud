@@ -1,51 +1,55 @@
 package br.com.fiap.mototrack_backend_java.controller;
 
-import br.com.fiap.mototrack_backend_java.dto.MovimentacaoDTO;
-import br.com.fiap.mototrack_backend_java.mapper.MovimentacaoMapper;
+import br.com.fiap.mototrack_backend_java.dto.MovimentacaoRequestDTO;
 import br.com.fiap.mototrack_backend_java.model.Movimentacao;
+import br.com.fiap.mototrack_backend_java.service.DepartamentoService;
+import br.com.fiap.mototrack_backend_java.service.MotoService;
 import br.com.fiap.mototrack_backend_java.service.MovimentacaoService;
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
-@RestController
+@Controller
 @RequestMapping("/movimentacoes")
 public class MovimentacaoController {
 
-    private final MovimentacaoService service;
+    @Autowired
+    private MovimentacaoService movimentacaoService;
 
-    public MovimentacaoController(MovimentacaoService service) {
-        this.service = service;
+    @Autowired
+    private MotoService motoService;
+
+    @Autowired
+    private DepartamentoService departamentoService;
+
+    @GetMapping("/moto/{id}")
+    public String listarPorMoto(@PathVariable("id") Long idMoto, Model model) {
+        var movimentacoes = movimentacaoService.buscarMovimentacoesPorIdDaMoto(idMoto);
+        var moto = motoService.buscarPorId(idMoto);
+
+        model.addAttribute("movimentacoes", movimentacoes);
+        model.addAttribute("moto", moto);
+        model.addAttribute("departamentos", departamentoService.buscarTodos());
+
+        return "movimentacoes";
     }
 
-    @GetMapping("/listar/todos")
-    public List<MovimentacaoDTO> listarTodos() {
-        return service.listarTodos()
-                .stream()
-                .map(MovimentacaoMapper::toDTO)
-                .collect(Collectors.toList());
+    @PostMapping("/cadastrar")
+    public String cadastrarMovimentacao(@ModelAttribute MovimentacaoRequestDTO movimentacao) {
+        Movimentacao movimentacaoSalva = movimentacaoService.salvar(movimentacao);
+        Long motoId = movimentacaoSalva.getMoto().getId();
+
+        return "redirect:/movimentacoes/moto/" + motoId;
     }
 
-    @GetMapping("/listar/{id}")
-    public MovimentacaoDTO buscarPorId(@PathVariable Long id) {
-        return MovimentacaoMapper.toDTO(service.buscarPorId(id));
-    }
-
-    @PostMapping("/salvar")
-    public MovimentacaoDTO salvar(@RequestBody @Valid MovimentacaoDTO dto) {
-        return MovimentacaoMapper.toDTO(service.salvar(MovimentacaoMapper.toEntity(dto)));
-    }
-
-    @PutMapping("/atualizar/{id}")
-    public MovimentacaoDTO atualizar(@PathVariable Long id, @RequestBody @Valid MovimentacaoDTO dto) {
-        Movimentacao movimentacao = MovimentacaoMapper.toEntity(dto);
-        movimentacao.setId(id);
-        return MovimentacaoMapper.toDTO(service.atualizar(id,movimentacao));
-    }
-
-    @DeleteMapping("/deletar/{id}")
+    @GetMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id) {
-        return service.deletar(id);
+        var movimentacao = movimentacaoService.buscarPorId(id);
+        Long motoId = movimentacao.getMoto().getId();
+
+        movimentacaoService.deletar(id);
+
+        return "redirect:/movimentacoes/moto/" + motoId;
     }
 }

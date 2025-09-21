@@ -1,54 +1,117 @@
 package br.com.fiap.mototrack_backend_java.controller;
 
-import br.com.fiap.mototrack_backend_java.dto.MotoDTO;
-import br.com.fiap.mototrack_backend_java.dto.UsuarioDTO;
-import br.com.fiap.mototrack_backend_java.mapper.MotoMapper;
-import br.com.fiap.mototrack_backend_java.mapper.UsuarioMapper;
 import br.com.fiap.mototrack_backend_java.model.Moto;
+import br.com.fiap.mototrack_backend_java.model.enums.ModeloMoto;
+import br.com.fiap.mototrack_backend_java.model.enums.Status;
 import br.com.fiap.mototrack_backend_java.service.MotoService;
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@RestController
+@Controller
 @RequestMapping("/motos")
 public class MotoController {
 
-    private final MotoService service;
+    @Autowired
+    private MotoService motoService;
 
-    public MotoController(MotoService service) {
-        this.service = service;
+    @GetMapping
+    public String listarTodos(
+            @RequestParam(required = false) String placa,
+            @RequestParam(required = false) String chassi,
+            @RequestParam(required = false) ModeloMoto modelo,
+            @RequestParam(required = false) Status status,
+            Model model) {
+
+        var motos = motoService.listarMotos(placa, chassi, modelo, status);
+        var resumo = motoService.resumirCards();
+
+        if (motos.isEmpty()) {
+            if (modelo == null && status == null && (placa == null || placa.isBlank()) && (chassi == null || chassi.isBlank())) {
+                model.addAttribute("mensagemVazio", true);
+            } else {
+                model.addAttribute("mensagemFiltro", true);
+            }
+        }
+
+        model.addAttribute("motos", motos);
+        model.addAttribute("resumo", resumo);
+
+        return "lista-motos";
     }
 
-    @GetMapping("/listar/todos")
-    public List<MotoDTO> listarTodos() {
-        return service.listarTodos()
-                .stream()
-                .map(MotoMapper::toDTO)
-                .collect(Collectors.toList());
+    @GetMapping("/cadastrar")
+    public String cadastrarMotoForm(Model model) {
+        model.addAttribute("moto", new Moto());
+        return "cadastro-moto";
     }
 
-    @GetMapping("/listar/{id}")
-    public MotoDTO buscarPorId(@PathVariable Long id) {
-        return MotoMapper.toDTO(service.buscarPorId(id));
+    @PostMapping("/cadastrar")
+    public String cadastrarMoto(@ModelAttribute Moto moto, Model model) {
+        boolean temErro = false;
+        model.addAttribute("erroPlaca", null);
+        model.addAttribute("erroChassi", null);
+
+        if (motoService.existePorPlaca(moto.getPlaca())) {
+            model.addAttribute("erroPlaca", "Já existe uma moto cadastrada com essa placa.");
+            temErro = true;
+        }
+
+        if (motoService.existePorChassi(moto.getChassi())) {
+            model.addAttribute("erroChassi", "Já existe uma moto cadastrada com esse chassi.");
+            temErro = true;
+        }
+
+        if (temErro) {
+            model.addAttribute("moto", moto);
+            return "cadastro-moto";
+        }
+
+        motoService.salvar(moto);
+        return "redirect:/motos";
     }
 
-    @PostMapping("/salvar")
-    public MotoDTO salvar(@RequestBody @Valid MotoDTO dto) {
-        return MotoMapper.toDTO(service.salvar(MotoMapper.toEntity(dto)));
+    @GetMapping("/editar/{id}")
+    public String editarMotoForm(@PathVariable Long id, Model model) {
+        Moto moto = motoService.buscarPorId(id);
+        model.addAttribute("moto", moto);
+        return "editar-moto";
     }
 
-    @PutMapping("/atualizar/{id}")
-    public MotoDTO atualizar(@PathVariable Long id, @RequestBody @Valid MotoDTO dto) {
-        Moto moto = MotoMapper.toEntity(dto);
-        moto.setId(id);
-        return MotoMapper.toDTO(service.atualizar(id,moto));
+    @PostMapping("/editar/{id}")
+    public String editarMoto(@PathVariable Long id, @ModelAttribute Moto moto, Model model) {
+        boolean temErro = false;
+        model.addAttribute("erroPlaca", null);
+        model.addAttribute("erroChassi", null);
+
+        Moto motoOriginal = motoService.buscarPorId(id);
+
+        if (!moto.getPlaca().equalsIgnoreCase(motoOriginal.getPlaca())
+                && motoService.existePorPlaca(moto.getPlaca())) {
+            model.addAttribute("erroPlaca", "Já existe uma moto cadastrada com essa placa.");
+            temErro = true;
+        }
+
+        if (!moto.getChassi().equalsIgnoreCase(motoOriginal.getChassi())
+                && motoService.existePorChassi(moto.getChassi())) {
+            model.addAttribute("erroChassi", "Já existe uma moto cadastrada com esse chassi.");
+            temErro = true;
+        }
+
+        if (temErro) {
+            model.addAttribute("moto", moto);
+            return "editar-moto";
+        }
+
+        motoService.atualizar(id, moto);
+        return "redirect:/motos";
     }
 
-    @DeleteMapping("/deletar/{id}")
+    @GetMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id) {
-        return service.deletar(id);
+        motoService.deletar(id);
+        return "redirect:/motos";
     }
+
 }

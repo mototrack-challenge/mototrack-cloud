@@ -1,52 +1,109 @@
 package br.com.fiap.mototrack_backend_java.controller;
 
-import br.com.fiap.mototrack_backend_java.dto.UsuarioDTO;
-import br.com.fiap.mototrack_backend_java.mapper.UsuarioMapper;
+import br.com.fiap.mototrack_backend_java.dto.UsuarioRequestDTO;
 import br.com.fiap.mototrack_backend_java.model.Usuario;
 import br.com.fiap.mototrack_backend_java.service.UsuarioService;
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@RestController
-@RequestMapping("/usuarios")
+@Controller
+@RequestMapping("")
 public class UsuarioController {
 
-    private final UsuarioService service;
+    @Autowired
+    private UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioService service) {
-        this.service = service;
+    @GetMapping("/login")
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
+                            Model model) {
+        if (error != null) {
+            model.addAttribute("mensagemErro", "Email ou senha inválidos.");
+        }
+
+        return "login";
     }
 
-    @GetMapping("/listar/todos")
-    public List<UsuarioDTO> listarTodos() {
-        return service.listarTodos()
-                .stream()
-                .map(UsuarioMapper::toDTO)
-                .collect(Collectors.toList());
+    @GetMapping("/cadastrar")
+    public String cadastroPagina(Model model) {
+        model.addAttribute("usuarioDTO", new UsuarioRequestDTO());
+        return "cadastro";
     }
 
-    @GetMapping("/listar/{id}")
-    public UsuarioDTO buscarPorId(@PathVariable Long id) {
-        return UsuarioMapper.toDTO(service.buscarPorId(id));
+    @PostMapping("/cadastrar")
+    public String cadastrarUsuario(@ModelAttribute("usuarioDTO") UsuarioRequestDTO usuarioDTO, Model model) {
+        try {
+            Usuario usuario = usuarioService.salvar(usuarioDTO, true);
+            model.addAttribute("mensagemSucesso", "Cadastro realizado com sucesso! Você será redirecionado para o login.");
+            return "cadastro";
+        } catch (Exception e) {
+            model.addAttribute("mensagemErro", e.getMessage());
+            return "cadastro";
+        }
     }
 
-    @PostMapping("/salvar")
-    public UsuarioDTO salvar(@RequestBody @Valid UsuarioDTO dto) {
-        return UsuarioMapper.toDTO(service.salvar(UsuarioMapper.toEntity(dto)));
+    @GetMapping("/usuarios")
+    public String listarTodos(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email
+            , Model model) {
+
+        var usuarios = usuarioService.listarUsuarios(nome, email);
+
+        if (usuarios.isEmpty()) {
+            if ((nome == null || nome.isBlank()) && (email == null || email.isBlank())) {
+                model.addAttribute("mensagemVazio", true);
+            } else {
+                model.addAttribute("mensagemFiltro", true);
+            }
+        }
+
+        model.addAttribute("usuarios", usuarios);
+
+        return "lista-usuarios";
     }
 
-    @PutMapping("/atualizar/{id}")
-    public UsuarioDTO atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTO dto) {
-        Usuario usuario = UsuarioMapper.toEntity(dto);
-        usuario.setId(id);
-        return UsuarioMapper.toDTO(service.atualizar(id,usuario));
+    @GetMapping("/usuarios/cadastrar")
+    public String cadastroUsuarioPaginaAdmin(Model model) {
+        model.addAttribute("usuarioDTO", new UsuarioRequestDTO());
+        return "cadastro-usuario";
     }
 
-    @DeleteMapping("/deletar/{id}")
+    @PostMapping("/usuarios/cadastrar")
+    public String cadastrarUsuarioAdmin(@ModelAttribute("usuarioDTO") UsuarioRequestDTO usuarioDTO, Model model) {
+        try {
+            Usuario usuario = usuarioService.salvar(usuarioDTO, false);
+            model.addAttribute("mensagemSucesso", "Cadastro de usuário realizado com sucesso!");
+            return "cadastro-usuario";
+        } catch (Exception e) {
+            model.addAttribute("mensagemErro", e.getMessage());
+            return "cadastro-usuario";
+        }
+    }
+
+    @GetMapping("/usuarios/editar/{id}")
+    public String editarUsuarioPaginaAdmin(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.buscarPorId(id);
+        model.addAttribute("usuario", usuario);
+        return "editar-usuario";
+    }
+
+    @PostMapping("usuarios/editar/{id}")
+    public String editarUsuarioAdmin(@PathVariable Long id, @ModelAttribute Usuario usuario, Model model) {
+        try {
+            usuarioService.atualizar(id, usuario);
+            model.addAttribute("mensagemSucesso", "Edição de usuário realizado com sucesso!");
+            return "editar-usuario";
+        } catch (Exception e) {
+            model.addAttribute("mensagemErro", e.getMessage());
+            return "editar-usuario";
+        }
+    }
+
+    @GetMapping("usuarios/deletar/{id}")
     public String deletar(@PathVariable Long id) {
-        return service.deletar(id);
+        usuarioService.deletar(id);
+        return "redirect:/usuarios";
     }
 }

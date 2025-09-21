@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoTrack - Cadastro</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+    <script th:src="@{/js/valida-form-cadastro.js}" defer></script>
+</head>
+<body>
+    <main>
+        <div class="container_login">
+            <img th:src="@{/img/logo-azul.png}" alt="Logo da MotoTrack" />
+            
+            <section class="container_login_form">
+                <div class="container_login_form_textos">
+                    <h1>Bem-vindo ao MotoTrack</h1>
+                    <p>Preencha o formulário abaixo para criar sua conta.</p>
+                </div>
+
+                <form class="login_form" id="loginForm" action="/cadastrar" method="post" th:object="${usuarioDTO}">
+                    <div class="form_group">
+                        <label for="nome">Nome Completo</label>
+                        <input
+                            type="text"
+                            id="nome"
+                            name="nome"
+                            placeholder="Digite seu nome completo"
+                            required
+                            th:field="*{nome}"
+                        />
+                    </div>
+
+                    <div class="form_group">
+                        <label for="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Digite seu email"
+                            required
+                            th:field="*{email}"
+                        />
+                    </div>
+
+                    <div class="form_group">
+                        <label for="password">Senha</label>
+                        <div class="password_container">
+                            <input
+                                type="password"
+                                id="password"
+                                name="senha"
+                                placeholder="Digite sua senha"
+                                required
+                                th:field="*{senha}"
+                            />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn_primary">Cadastrar</button>
+                </form>
+
+                <div class="container_mensagem_login" id="validacaoMensagem"></div>
+
+                <div class="container_mensagem_login_sucesso" id="cadastroSucesso" th:if="${mensagemSucesso}">
+                    <p th:text="${mensagemSucesso}"></p>
+                </div>
+
+                <div class="container_mensagem_login" id="loginMessage">
+                    <p th:if="${mensagemErro}" th:text="${mensagemErro}"></p>
+                </div>
+
+                <div class="container_link_cadastro">
+                    <p class="link_cadastro">Já possui uma conta? <a href="/login">Faça login</a></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+  --primary: #546e7a;
+  --primary-dark: #455a64;
+  --secondary: #546e7a;
+  --success: #0e9f6e;
+  --warning: #f05252;
+  --info: #3f83f8;
+  --light-bg: #f9fafb;
+  --dark-text: #1f2937;
+  --light-text: #6b7280;
+  --border: #e5e7eb;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --font: "Montserrat", sans-serif;
+  --alerta-alta: #f05252;
+  --alerta-media: #faca15;
+  --alerta-baixa: #3f83f8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  font-family: var(--font);
+  line-height: 1.6;
+}
+
+.cabecalho {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 20px;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.rodape {
+  background-color: white;
+  padding: 28px 24px;
+  border-top: 1px solid #e0e0e0;
+  color: #7c8894;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.logo img {
+  width: 100px;
+  height: auto;
+}
+
+.logo h1 {
+  color: #395b65;
+  font-size: 24px;
+}
+
+.cabecalho_botoes {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn_cadastro_usuario {
+  border: none;
+  cursor: pointer;
+  background: var(--primary);
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: var(--card-shadow);
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn_cadastro_usuario:hover {
+  background: var(--primary-dark);
+}
+
+.btn_logout {
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: white;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: var(--dark-text);
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn_logout:hover {
+  background-color: #f3f4f6;
+}
+
+button {
+  font-family: var(--font);
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  .cabecalho {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .cabecalho_botoes {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn_cadastro_usuario,
+  .btn_logout {
+    flex: 1;
+    justify-content: center;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cabecalho_botoes {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn_cadastro_usuario,
+  .btn_logout {
+    width: 100%;
+  }
+
+  .logo {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .logo h1 {
+    font-size: 20px;
+  }
+}
