@@ -186,17 +186,17 @@ az appservice plan create --name MotoTrackPlan --resource-group MotoTrackRG --sk
 
 3. Criar o **App Service com JDK 17**:
 ```bash
-az webapp create --resource-group MotoTrackRG --plan MotoTrackPlan --name mototrack-app123 --runtime "JAVA:17-java17"
+az webapp create --resource-group MotoTrackRG --plan MotoTrackPlan --name mototrack-app --runtime "JAVA:17-java17"
 ```
 
 4. Configurar as **variáveis de ambiente**:
 ```bash
-az webapp config appsettings set --resource-group MotoTrackRG --name mototrack-app123 --settings DB_URL="jdbc:postgresql://mototrackdbserver.postgres.database.azure.com:5432/mototrack" DB_USER="adminuser@mototrackdbserver" DB_PASSWORD="MotoTrack123!"
+az webapp config appsettings set --resource-group MotoTrackRG --name mototrack-app --settings DB_URL="jdbc:postgresql://mototrackdbserver.postgres.database.azure.com:5432/mototrack" DB_USER="adminuser" DB_PASSWORD="MotoTrack123!"
 ```
 
 5. Fazer o **deploy da aplicação**:
 ```bash
-az webapp deploy --resource-group MotoTrackRG --name mototrack-app123 --src-path target/mototrack-backend-java-0.0.1-SNAPSHOT.jar --type jar
+az webapp deploy --resource-group MotoTrackRG --name mototrack-app --src-path target/mototrack-backend-java-0.0.1-SNAPSHOT.jar --type jar
 ```
 
 ### 🌐 Acessar a Aplicação
