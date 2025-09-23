@@ -1,4 +1,4 @@
-# 🏍️ MotoTrack - Backend MVC (Java)
+# 🏍️ MotoTrack - Cloud
 
 ## 👥 Integrantes
 
@@ -11,8 +11,8 @@
 - [📝 Descrição da Solução](#-descrição-da-solução)  
 - [🗄️ Modelagem do Banco de Dados](#️-modelagem-do-banco-de-dados)  
 - [🚀 Como Rodar o Projeto MotoTrack Completo](#-como-rodar-o-projeto-mototrack-completo)  
-- [🖥️ Detalhes do Projeto MVC (Java)](#️-detalhes-do-projeto-mvc-java)  
-- [🚀 Como Rodar o Projeto MVC (Java)](#-como-rodar-o-projeto-mvc-java)  
+- [☁️ Detalhes do Projeto em Cloud](#️-detalhes-do-projeto-em-cloud)  
+- [🚀 Como Fazer o Deploy em Cloud (Azure)](#️-como-fazer-o-deploy-em-cloud-azure)  
 - [📹 Demonstração em Vídeo](#-demonstração-em-vídeo)  
 
 ## 📝 Descrição da Solução
@@ -47,7 +47,7 @@ O projeto foi dividido em múltiplos módulos para facilitar **escalabilidade e 
 ## 🗄️ Modelagem do Banco de Dados
 Abaixo está a modelagem das tabelas utilizadas pelo sistema:  
 
-![Tela de Login](docs/modelagem-moto-track.png)
+![Modelagem Banco de Dados](docs/modelagem-moto-track.png)
 
 ---
 
@@ -88,107 +88,142 @@ Para utilizar o **MotoTrack** de forma completa, é necessário rodar simultanea
 
 ---
 
-## 🖥️ Detalhes do Projeto MVC (Java)
+## ☁️ Detalhes do Projeto em Cloud
 
-O **MotoTrack MVC Java** é o módulo web do sistema, desenvolvido com **Spring MVC**, que permite gerenciar motos, movimentações, alertas e usuários diretamente pelo navegador. Ele foi pensado para fornecer uma **experiência de usuário agradável**, com **interfaces intuitivas e páginas bem estruturadas**.
+O **MotoTrack Cloud** é a versão do projeto **MVC Java** implantada na nuvem utilizando os serviços da **Microsoft Azure**.  
+O objetivo foi tornar a aplicação acessível de forma **remota e escalável**, garantindo alta disponibilidade e integração com um banco de dados em nuvem.
 
-### 🛠️ Tecnologias e Dependências
-O projeto utiliza as seguintes tecnologias e bibliotecas principais:  
-- **Java 21**  
-- **Spring MVC** – desenvolvimento do backend web e controllers  
-- **Spring Security** – autenticação e autorização  
-- **Spring Data JPA** – integração com o **Oracle Database**  
-- **Thymeleaf** – renderização de páginas HTML
-- **Flyway** – versionamento e migração automática do banco de dados 
-- **Maven** – gerenciamento de dependências e build do projeto
+### 🛠️ Tecnologias e Serviços Utilizados
+O deploy em cloud utilizou os seguintes recursos principais:  
+- **Azure App Service** – hospedagem do projeto **Spring MVC Java**, permitindo escalabilidade automática e gerenciamento simplificado.  
+- **Azure Database for PostgreSQL** – banco de dados relacional totalmente gerenciado na nuvem.  
+- **Java 17** – versão utilizada na aplicação.  
+- **Maven** – build e gerenciamento de dependências.  
 
-### 🔐 Segurança e Perfis de Usuário
-O projeto possui **Spring Security** implementado, garantindo que apenas usuários autenticados consigam acessar o sistema. Além disso, há **validação por tipo de usuário**:
-- **Administrador** – acesso completo a todas as funcionalidades, incluindo:  
-  - ✅ Cadastro, edição e exclusão de **usuários**, definindo se serão **Administrador** ou **Comum**  
-  - ✅ Cadastro, edição e exclusão de **motos**  
-  - ✅ Cadastro, edição e exclusão de **movimentações e alertas**  
+### ⚙️ Estrutura do Deploy
+- O **banco de dados local (Oracle)** foi substituído por um **PostgreSQL na Azure**, configurado com usuário, senha e acesso remoto.  
+- O projeto **Spring MVC** foi empacotado como `.jar` e publicado no **Azure App Service**.  
+- As **variáveis de ambiente** (URL do banco, usuário e senha) foram configuradas diretamente no **App Service**, garantindo segurança e portabilidade.  
 
-- **Usuário Comum** – acesso restrito, podendo apenas:  
-  - ✅ Visualizar as **motos cadastradas**  
-  - ✅ Criar e deletar **movimentações e alertas** das motos  
-  - ❌ Não consegue visualizar ou gerenciar usuários  
-  - ❌ Não pode criar, editar ou deletar motos  
+### 📝 Funcionalidades Disponíveis na Nuvem
+Na versão em cloud, o sistema mantém todas as funcionalidades do **MVC Java**:  
+- ✅ Login e cadastro de usuários  
+- 🏍️ Cadastro, edição, listagem e exclusão de motos  
+- 🔄 Cadastro, listagem e exclusão de movimentações  
+- 🚨 Cadastro, listagem e exclusão de alertas  
+- 📊 Visualização de histórico e status das motos  
 
-> ⚠️ Ao rodar o projeto pela primeira vez, o sistema cria automaticamente um **usuário administrador** para testes:  
-> - Email: `admin@email.com`  
-> - Senha: `admin123` 
+### 🌐 Acesso ao Sistema
+Após o deploy, a aplicação ficou acessível por meio de uma **URL pública gerada pelo App Service**, permitindo que qualquer usuário autenticado consiga utilizar o sistema remotamente.  
 
-### 📝 Funcionalidades
-O MVC permite realizar:
-- ✅ **Login e cadastro de usuários**  
-- 🏍️ **Cadastro, listagem, edição e exclusão de motos**  
-- 🔄 **Cadastro, listagem e exclusão de movimentações**  
-- 🚨 **Cadastro, listagem e exclusão de alertas**  
-- 📊 **Visualização de histórico de movimentações e status das motos**
+### 📊 Benefícios da Arquitetura em Cloud
+- 🌍 **Acesso remoto** de qualquer lugar  
+- 📈 **Escalabilidade automática** via App Service  
+- 🔒 **Segurança e gerenciamento** simplificados pela Azure  
+- ⚡ **Alto desempenho** com banco de dados gerenciado (PostgreSQL)  
 
-### 📸 Exemplos de Telas
-1. **Tela de Login**  
-   ![Tela de Login](docs/login.png)
-
-2. **Tela de Listagem de Usuários**  
-   ![Tela de Usuários](docs/lista-usuarios.png)
-
-3. **Tela de Cadastro de Usuários**  
-   ![Cadastro Usuário](docs/cadastro-usuario.png)
-
-4. **Tela de Listagem de Motos**  
-   ![Listagem de Motos 1](docs/lista-motos-1.png)
-
-   ![Listagem de Motos 2](docs/lista-motos-2.png)
-
-5. **Tela de Cadastro de Moto**  
-   ![Cadastro Moto](docs/cadastro-moto.png)
-
-6. **Tela de Movimentações e Alertas**  
-   ![Movimentações](docs/lista-movimentacoes.png)  
-   ![Alertas](docs/lista-alertas.png)
-
-> ⚠️ Todas as telas seguem um padrão visual consistente, facilitando a navegação e tornando o sistema mais agradável para o usuário final.
-
+> ⚠️ O uso da **Azure** possibilitou experimentar na prática como funciona o deploy de uma aplicação corporativa em um ambiente real de **Cloud Computing**.
 --- 
 
-## 🚀 Como Rodar o Projeto MVC (Java)
+## ☁️ Como Fazer o Deploy em Cloud (Azure)
 
-Para executar o **MotoTrack MVC Java**, siga os passos abaixo:
+Para executar o **MotoTrack MVC Java em Cloud**, siga os passos abaixo:
 
-### 1️⃣ Configurar o Banco de Dados
-- Abra o arquivo de configuração do banco (por exemplo, `application.properties`) e configure as **credenciais de acesso ao Oracle** (usuário, senha e URL).  
-- ✅ O banco e as tabelas serão **criados automaticamente** ao iniciar o projeto, incluindo o usuário admin inicial:
-  - Email: `admin@email.com`
-  - Senha: `admin123`
+### 1️⃣ Clonar o Repositório
+Clone o projeto disponível no GitHub:
+```bash
+git clone https://github.com/mototrack-challenge/mototrack-cloud.git
+cd mototrack-cloud
+```
 
-### 2️⃣ Verificar Dependências
-- Certifique-se de que o **Maven carregou todas as dependências** corretamente.  
-- No IntelliJ IDEA, o Maven fará o download automático ao abrir o projeto, mas é recomendado verificar na aba **Maven** se todas as dependências foram resolvidas.
+### 2️⃣ Preparar o Ambiente
+- Instale o **Azure CLI**, caso ainda não tenha.
+- Faça login na sua conta Azure:
+```bash
+az login
+```
 
-### 3️⃣ Executar o Projeto
-- Abra o projeto no **IntelliJ IDEA**.  
-- Clique no **ícone de play** na classe principal (`@SpringBootApplication`) para iniciar o servidor.  
-- O projeto será iniciado no **localhost:8080**.
+- Confirme se o login foi realizado corretamente:
+```bash
+az account show
+```
 
-### 4️⃣ Acessar a Aplicação
-- Abra o navegador e acesse: [http://localhost:8080](http://localhost:8080)
+### 3️⃣ Criar o Banco de Dados na Azure
+1. Criar um **Resource Group**:
+```bash
+az group create --name MotoTrackRG --location brazilsouth
+```
 
-- Você será redirecionado automaticamente para a **tela de login**.
+2. Criar um **servidor PostgreSQL**:
+```bash
+az postgres flexible-server create --resource-group MotoTrackRG --name mototrackdbserver --location brazilsouth --admin-user adminuser --admin-password "MotoTrack123!" --tier Burstable --sku-name standard_b1ms --storage-size 32 --version 15 --public-access All
+```
 
-> ⚠️ Dica: Primeiro configure o banco e verifique as dependências do Maven para evitar erros de inicialização.
+3. Criar um **banco de dados** dentro do servidor:
+```bash
+az postgres flexible-server db create --resource-group MotoTrackRG --server-name mototrackdbserver --database-name mototrack
+```
+
+4. Obter a **URL do servidor**:
+```bash
+az postgres flexible-server show --resource-group MotoTrackRG --name mototrackdbserver --query "fullyQualifiedDomainName"
+```
+
+5. Conectar no banco via **pgAdmin4** (ou psql), usando a URL, usuário e senha.
+      - Abra o banco `mototrack`
+      - Execute o script SQL disponível no repositório: `script_bd.sql`
+
+### 4️⃣ Criar o App Service
+1. Gerar o `.jar` do projeto:
+```bash
+mvn clean package
+```
+
+2. Criar um **App Service Plan**:
+```bash
+az appservice plan create --name MotoTrackPlan --resource-group MotoTrackRG --sku B1 --is-linux
+```
+
+3. Criar o **App Service com JDK 17**:
+```bash
+az webapp create --resource-group MotoTrackRG --plan MotoTrackPlan --name mototrack-app123 --runtime "JAVA:17-java17"
+```
+
+4. Configurar as **variáveis de ambiente**:
+```bash
+az webapp config appsettings set --resource-group MotoTrackRG --name mototrack-app123 --settings DB_URL="jdbc:postgresql://mototrackdbserver.postgres.database.azure.com:5432/mototrack" DB_USER="adminuser@mototrackdbserver" DB_PASSWORD="MotoTrack123!"
+```
+
+5. Fazer o **deploy da aplicação**:
+```bash
+az webapp deploy --resource-group MotoTrackRG --name mototrack-app123 --src-path target/mototrack-backend-java-0.0.1-SNAPSHOT.jar --type jar
+```
+
+### 🌐 Acessar a Aplicação
+
+Após o deploy, a aplicação estará disponível publicamente em uma URL gerada pelo **App Service**, no formato:
+```bash
+https://mototrack-app123.azurewebsites.net
+```
+
+> ⚠️ Lembre-se: o banco de dados **PostgreSQL** precisa estar ativo e com as tabelas criadas (via script SQL) antes de rodar a aplicação em cloud.
 
 --- 
 
 ## 📹 Demonstração em Vídeo
 
-Para ver o **MotoTrack MVC Java** em funcionamento, assista ao vídeo abaixo, onde o projeto é executado e suas principais funcionalidades são demonstradas:  
+Para ver o **MotoTrack MVC Java** em funcionamento na **Azure**, assista ao vídeo abaixo, que mostra o **passo a passo completo de criação, configuração e teste do projeto na nuvem**:  
 
 🎥 [Assista à demonstração completa](https://www.youtube.com/watch?v=h_PNwJsyep4)  
 
 No vídeo, você verá:  
-- Login e cadastro de usuários (admin e comum)  
-- Cadastro, edição, listagem e exclusão de motos  
-- Cadastro, listagem e exclusão de movimentações e alertas  
-- Navegação pelas principais telas e funcionalidades do sistema
+- Como **criar o banco de dados PostgreSQL** na Azure  
+- Configuração do **App Service** e variáveis de ambiente  
+- Deploy do projeto Java para o App Service  
+- Testes das principais funcionalidades:
+  - Login e cadastro de usuários (admin e comum)  
+  - Cadastro, edição, listagem e exclusão de motos  
+  - Cadastro, listagem e exclusão de movimentações e alertas  
+- Navegação pelas telas do sistema diretamente pelo navegador, mostrando que o projeto está rodando na nuvem  
+
+> ⚠️ Lembre-se: para acompanhar o vídeo e testar o projeto, o banco PostgreSQL e o App Service precisam estar ativos e configurados corretamente conforme o passo a passo.
