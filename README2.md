@@ -177,12 +177,54 @@ az login
 az account show
 ```
 
-### 3️⃣ Criar o App Service
+### 3️⃣ Criar o Banco de Dados na Azure
 
 1. Criar um **Resource Group**:
 
 ```bash
 az group create --name MotoTrackRG --location brazilsouth
+```
+
+2. Criar um **servidor PostgreSQL**:
+
+```bash
+az postgres flexible-server create --resource-group MotoTrackRG --name mototrackdbserver --location brazilsouth --admin-user adminuser --admin-password "MotoTrack123!" --tier Burstable --sku-name standard_b1ms --storage-size 32 --version 15 --public-access All
+```
+
+3. Criar um **banco de dados** dentro do servidor:
+
+```bash
+az postgres flexible-server db create --resource-group MotoTrackRG --server-name mototrackdbserver --database-name mototrack
+```
+
+4. Obter a **URL do servidor**:
+
+```bash
+az postgres flexible-server show --resource-group MotoTrackRG --name mototrackdbserver --query "fullyQualifiedDomainName"
+```
+
+5. Conectar no banco via **pgAdmin4** (ou psql), usando a URL, usuário e senha.
+   - Abra o banco `mototrack`
+   - Execute o script SQL disponível no repositório: `script_bd.sql`
+
+### 4️⃣ Conferir a Versão do JDK
+
+Antes de gerar o build, é importante garantir que o projeto esteja rodando com o **JDK 17** (necessário para o deploy no App Service).
+
+No **IntelliJ IDEA**:
+
+1. Vá em `File > Project Structure > Project`.
+2. Em **Project SDK**, selecione o **Java 17** (se não aparecer, adicione manualmente).
+3. Certifique-se de que o **Project language level** também esteja configurado para `17 - Sealed types, always-strict floating-point semantics`.
+
+⚠️ Caso o JDK 21 ou outra versão esteja como padrão, altere para **17** para evitar erros de compatibilidade no build e no deploy.
+
+### 5️⃣ Criar o App Service
+
+1. Gerar o `.jar` do projeto:
+
+```bash
+mvn clean package
 ```
 
 2. Criar um **App Service Plan**:
@@ -197,67 +239,14 @@ az appservice plan create --name MotoTrackPlan --resource-group MotoTrackRG --sk
 az webapp create --resource-group MotoTrackRG --plan MotoTrackPlan --name mototrack-app --runtime "JAVA:17-java17"
 ```
 
-4. Obter os **IPs do App Service**:
+4. Configurar as **variáveis de ambiente**:
 
-```bash
-az webapp show --resource-group MotoTrackRG --name mototrack-app --query outboundIpAddresses --output tsv
-```
-> É retornado uma lista separada por vírgulas, exemplo: `20.55.10.23,20.55.11.14,20.55.12.67`
-
-### 4️⃣ Criar o Banco de Dados na Azure
-
-1. Criar um **servidor PostgreSQL**:
-
-```bash
-az postgres flexible-server create --resource-group MotoTrackRG --name mototrackdbserver --location brazilsouth --admin-user adminuser --admin-password "MotoTrack123!" --tier Burstable --sku-name standard_b1ms --storage-size 32 --version 15 --public-access Enabled
-```
-
-2. Criar um **banco de dados** dentro do servidor:
-
-```bash
-az postgres flexible-server db create --resource-group MotoTrackRG --server-name mototrackdbserver --database-name mototrack
-```
-
-3. Obter a **URL do servidor**:
-
-```bash
-az postgres flexible-server show --resource-group MotoTrackRG --name mototrackdbserver --query "fullyQualifiedDomainName"
-```
-
-### 5️⃣ Liberar os IPs para o acesso ao banco
-
-1. Liberar acesso à **máquina local**:
-```bash
-az postgres flexible-server firewall-rule create --resource-group MotoTrackRG --name mototrackdbserver --rule-name AllowLocal --start-ip-address <SEU_IP_LOCAL> --end-ip-address <SEU_IP_LOCAL>
-```
-
-2. Liberar acesso aos **IPs do App Service**:
-```bash
-az postgres flexible-server firewall-rule create --resource-group MotoTrackRG --name mototrackdbserver --rule-name AllowAppService1 --start-ip-address <APP_SERVICE_IP1> --end-ip-address <APP_SERVICE_IP1>
-```
-> É preciso rodar esse comandos com todos os IPs retornados anteriormente. Lembre de mudar o nome da regra: AllowAppService1, AllowAppService2 ...
-
-### 6️⃣ Executar o script SQL no banco de dados
-
-1. Conectar no banco via **pgAdmin4** (ou psql), usando a URL, usuário e senha.
-   - Abra o banco `mototrack`
-   - Execute o script SQL disponível no repositório: `script_bd.sql`
-
-### 7️⃣ Configurar variáveis de ambiente no App Service
-
-1. Configurar as **variáveis de ambiente**:
 ```bash
 az webapp config appsettings set --resource-group MotoTrackRG --name mototrack-app --settings DB_URL="jdbc:postgresql://mototrackdbserver.postgres.database.azure.com:5432/mototrack" DB_USER="adminuser" DB_PASSWORD="MotoTrack123!"
 ```
 
-### 8️⃣ Gerar o .jar do projeto
-1. Na raiz do diretório, abra o CMD/PowerShell e rode:
-```bash
-mvn clean package
-```
+5. Fazer o **deploy da aplicação**:
 
-### 9️⃣ Fazer o deploy da aplicação
-1. Fazer o **deploy da aplicação**:
 ```bash
 az webapp deploy --resource-group MotoTrackRG --name mototrack-app --src-path target/mototrack-backend-java-0.0.1-SNAPSHOT.jar --type jar
 ```
@@ -267,7 +256,7 @@ az webapp deploy --resource-group MotoTrackRG --name mototrack-app --src-path ta
 Após o deploy, a aplicação estará disponível publicamente em uma URL gerada pelo **App Service**, no formato:
 
 ```bash
-https://mototrack-app.azurewebsites.net
+https://mototrack-app123.azurewebsites.net
 ```
 
 > ⚠️ Lembre-se: o banco de dados **PostgreSQL** precisa estar ativo e com as tabelas criadas (via script SQL) antes de rodar a aplicação em cloud.
