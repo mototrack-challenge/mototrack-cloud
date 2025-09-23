@@ -202,7 +202,7 @@ az webapp create --resource-group MotoTrackRG --plan MotoTrackPlan --name mototr
 ```bash
 az webapp show --resource-group MotoTrackRG --name mototrack-app --query outboundIpAddresses --output tsv
 ```
-> É retornado uma lista separada por vírgulas, exemplo: `20.55.10.23,20.55.11.14,20.55.12.67`
+> ⚠️ Lembre-se: É retornado uma lista separada por vírgulas, exemplo: `20.55.10.23,20.55.11.14,20.55.12.67`
 
 ### 4️⃣ Criar o Banco de Dados na Azure
 
@@ -235,7 +235,7 @@ az postgres flexible-server firewall-rule create --resource-group MotoTrackRG --
 ```bash
 az postgres flexible-server firewall-rule create --resource-group MotoTrackRG --name mototrackdbserver --rule-name AllowAppService1 --start-ip-address <APP_SERVICE_IP1> --end-ip-address <APP_SERVICE_IP1>
 ```
-> É preciso rodar esse comandos com todos os IPs retornados anteriormente. Lembre de mudar o nome da regra: AllowAppService1, AllowAppService2 ...
+> ⚠️ Lembre-se: É preciso rodar esse comandos com **todos os IPs retornados anteriormente**. Mude os nomes das regras: AllowAppService1, AllowAppService2 ...
 
 ### 6️⃣ Executar o script SQL no banco de dados
 
@@ -251,7 +251,17 @@ az webapp config appsettings set --resource-group MotoTrackRG --name mototrack-a
 ```
 
 ### 8️⃣ Gerar o .jar do projeto
-1. Na raiz do diretório, abra o CMD/PowerShell e rode:
+1. Configurar variáveis de ambiente na **máquina local**:
+
+Antes de gerar o .jar, defina as mesmas variáveis de ambiente do App Service na sua máquina:
+```bash
+DB_URL = "jdbc:postgresql://mototrackdbserver.postgres.database.azure.com:5432/mototrack"
+DB_USER = "adminuser"
+DB_PASSWORD = "MotoTrack123!"
+```
+> 🔄 Reinicie o computador ou pelo menos o terminal/IDE para que as alterações entrem em vigor.
+
+2. Na raiz do diretório, **abra o CMD/PowerShell e rode**:
 ```bash
 mvn clean package
 ```
