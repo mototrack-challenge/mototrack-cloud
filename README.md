@@ -118,6 +118,10 @@ O deploy em cloud utilizou os seguintes recursos principais:
 - **Java 17** – versão utilizada na aplicação.
 - **Maven** – build e gerenciamento de dependências.
 
+### 📐 Desenho da Arquitetura em Cloud
+
+![Desenho da arquitetura](docs/Arquitetura-MotoTrack.png)
+
 ### ⚙️ Estrutura do Deploy
 
 - O **banco de dados local (Oracle)** foi substituído por um **PostgreSQL na Azure**, configurado com usuário, senha e acesso remoto.
