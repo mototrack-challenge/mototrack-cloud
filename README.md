@@ -281,7 +281,7 @@ https://mototrack-app.azurewebsites.net
 
 Para ver o **MotoTrack MVC Java** em funcionamento na **Azure**, assista ao vídeo abaixo, que mostra o **passo a passo completo de criação, configuração e teste do projeto na nuvem**:
 
-🎥 [Assista à demonstração completa](https://www.youtube.com/watch?v=h_PNwJsyep4)
+🎥 [Assista à demonstração completa](https://www.youtube.com/watch?v=BvK2NWAhHi4)
 
 No vídeo, você verá:
 
