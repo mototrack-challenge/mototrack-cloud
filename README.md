@@ -106,8 +106,9 @@ Também é possível executar o **MotoTrack MVC Java** diretamente na nuvem, uti
 
 ## ☁️ Detalhes do Projeto em Cloud
 
-O **MotoTrack Cloud** é a versão do projeto **MVC Java** implantada na nuvem utilizando os serviços da **Microsoft Azure**.  
-O objetivo foi tornar a aplicação acessível de forma **remota e escalável**, garantindo alta disponibilidade e integração com um banco de dados em nuvem.
+O **MotoTrack Cloud** é a versão do projeto **MVC Java** implantada na nuvem utilizando os serviços da **Microsoft Azure**.
+
+O objetivo foi tornar a aplicação acessível de forma **remota**, **automatizada** e **escalável**, garantindo **alta disponibilidade**, **integração contínua** e **entrega automatizada**.
 
 ### 🛠️ Tecnologias e Serviços Utilizados
 
@@ -115,18 +116,37 @@ O deploy em cloud utilizou os seguintes recursos principais:
 
 - **Azure App Service** – hospedagem do projeto **Spring MVC Java**, permitindo escalabilidade automática e gerenciamento simplificado.
 - **Azure Database for PostgreSQL** – banco de dados relacional totalmente gerenciado na nuvem.
+- **Azure DevOps** – plataforma completa utilizada tanto para **gestão ágil do projeto (Boards e Backlogs)** quanto para **automação CI/CD (Repos e Pipelines)**.
+- **Azure Repos** – repositório Git que armazena o código-fonte do projeto e integra com os pipelines de CI/CD.
+- **Azure Pipelines** – responsável por executar o processo de build (CI) e deploy (CD) de forma automatizada no **App Service**.
 - **Java 17** – versão utilizada na aplicação.
 - **Maven** – build e gerenciamento de dependências.
 
 ### 📐 Desenho da Arquitetura em Cloud
 
-![Desenho da arquitetura](docs/Arquitetura-MotoTrack.png)
+![Desenho da arquitetura](docs/Arquitetura-MotoTrack-v2.jpg)
 
-### ⚙️ Estrutura do Deploy
+### ⚙️ Estrutura do Deploy e Automação (CI/CD)
 
-- O **banco de dados local (Oracle)** foi substituído por um **PostgreSQL na Azure**, configurado com usuário, senha e acesso remoto.
-- O projeto **Spring MVC** foi empacotado como `.jar` e publicado no **Azure App Service**.
-- As **variáveis de ambiente** (URL do banco, usuário e senha) foram configuradas diretamente no **App Service**, garantindo segurança e portabilidade.
+- O **desenvolvedor** envia o código para o **Azure Repos**, onde o repositório Git centraliza a versão mais recente do projeto.
+
+- O **pipeline de CI (Continuous Integration)** é acionado automaticamente a cada commit, realizando **build**, **testes** e **validações do código**.
+
+- Após a validação, o **pipeline de CD (Continuous Delivery)** realiza o **deploy automático** da aplicação no **Azure App Service**, tornando a nova versão disponível imediatamente.
+
+- As **variáveis de ambiente** (URL do banco, usuário e senha) são configuradas diretamente no App Service, garantindo **segurança e portabilidade**.
+
+- O **banco de dados Oracle local** foi substituído por um **PostgreSQL na Azure**, configurado com acesso remoto e segurança em nível de conexão.
+
+### 🧩 Gestão Ágil com Azure DevOps
+
+Além da automação de deploy, o **Azure DevOps** também foi utilizado para a gestão do projeto:
+
+- O **Azure Boards** organizou as Sprints, tarefas e histórias de usuário seguindo o modelo **Ágil/Scrum**.
+
+- O **Backlog** permitiu priorizar demandas e acompanhar o progresso de cada integrante da equipe.
+
+- Essa integração entre **gestão ágil** e **CI/CD** garantiu um fluxo contínuo de desenvolvimento, testes e entrega de novas versões.
 
 ### 📝 Funcionalidades Disponíveis na Nuvem
 
@@ -145,11 +165,12 @@ Após o deploy, a aplicação ficou acessível por meio de uma **URL pública ge
 ### 📊 Benefícios da Arquitetura em Cloud
 
 - 🌍 **Acesso remoto** de qualquer lugar
+- ⚙️ **Automação com CI/CD** via Azure DevOps
 - 📈 **Escalabilidade automática** via App Service
 - 🔒 **Segurança e gerenciamento** simplificados pela Azure
 - ⚡ **Alto desempenho** com banco de dados gerenciado (PostgreSQL)
 
-> ⚠️ O uso da **Azure** possibilitou experimentar na prática como funciona o deploy de uma aplicação corporativa em um ambiente real de **Cloud Computing**.
+> ⚠️ O uso combinado de **Azure DevOps**, **Repos**, **Pi** e **App Service** proporcionou uma experiência completa de **integração e entrega contínua (CI/CD)**, simulando o ciclo real de deploy de uma aplicação corporativa em um ambiente de **Cloud Computing**.
 
 ---
 
