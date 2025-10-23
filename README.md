@@ -122,6 +122,18 @@ O deploy em cloud utilizou os seguintes recursos principais:
 - **Java 17** – versão utilizada na aplicação.
 - **Maven** – build e gerenciamento de dependências.
 
+### 🧩 Componentes da Arquitetura Cloud
+
+| **Nome do Componente**    | **Tipo**                                    | **Descrição Funcional**                                      | **Tecnologia / Ferramenta**       |
+| ------------------------- | ------------------------------------------- | ------------------------------------------------------------ | --------------------------------- |
+| **Repositório de Código** | SCM (Source Code Management)                | Onde o código-fonte está versionado                          | **GitHub**                        |
+| **Pipeline CI**           | Orquestrador de CI (Continuous Integration) | Compila o projeto e executa testes automáticos a cada commit | **Azure DevOps Pipelines**        |
+| **Pipeline CD**           | Orquestrador de CD (Continuous Delivery)    | Realiza o deploy automático da aplicação na nuvem            | **Azure DevOps Pipelines**        |
+| **Banco de Dados**        | PaaS (Platform as a Service)                | Armazena os dados da aplicação de forma gerenciada           | **Azure Database for PostgreSQL** |
+| **Web App**       | App Service                       | Local onde a aplicação roda e é disponibilizada publicamente | **Azure Web App**                 |
+| **Gestão Ágil**           | Project Management                          | Organização de Sprints, tarefas e backlog do time            | **Azure Boards (DevOps)**         |
+
+
 ### 📐 Desenho da Arquitetura em Cloud
 
 ![Desenho da arquitetura](docs/Arquitetura-MotoTrack-v2.jpg)
