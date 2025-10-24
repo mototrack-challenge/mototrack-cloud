@@ -51,7 +51,7 @@ O projeto foi dividido em múltiplos módulos para facilitar **escalabilidade e 
 
 Abaixo está a modelagem das tabelas utilizadas pelo sistema:
 
-![Modelagem Banco de Dados](docs/modelagem-moto-track.png)
+![Modelagem Banco de Dados](docs/Modelagem-Banco.png)
 
 ---
 
