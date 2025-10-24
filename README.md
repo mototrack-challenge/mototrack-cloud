@@ -188,7 +188,13 @@ Após o deploy, a aplicação ficou acessível por meio de uma **URL pública ge
 
 ## ☁️ Como Fazer o Deploy em Cloud (Azure)
 
-Para executar o **MotoTrack MVC Java em Cloud**, siga os passos abaixo:
+O **MotoTrack Cloud** pode ser implantado na **Microsoft Azure** de duas formas:
+
+1️⃣ **Manual**, via **Azure CLI**, ou
+
+2️⃣ **Automatizada**, via **CI/CD com Azure DevOps**.
+
+> 💡 **Importante**: ambas as opções exigem a **criação prévia do banco de dados** via **Azure CLI**.
 
 ### 1️⃣ Clonar o Repositório
 
@@ -244,7 +250,36 @@ az postgres flexible-server show --resource-group MotoTrackRG --name mototrackdb
    - Abra o banco `mototrack`
    - Execute o script SQL disponível no repositório: `script_bd.sql`
 
-### 4️⃣ Conferir a Versão do JDK
+### 🚀 Opção 1 – Deploy Automatizado (CI/CD via Azure DevOps)
+
+O processo de deploy automatizado utiliza o **Azure DevOps** para integração e entrega contínua **(CI/CD)**.
+Essa abordagem é ideal para times que desejam manter **automatização**, **versionamento** e **rastreabilidade** durante o ciclo de desenvolvimento.
+
+#### 🔧 Etapas do Pipeline
+
+1- **Azure Repos**
+O desenvolvedor envia o código para o repositório Git hospedado no **Azure Repos**.
+
+2- **Pipeline de CI (Continuous Integration)**
+      - É acionado automaticamente a cada *commit* ou *pull request*;
+      - Executa o **build** do projeto com **Maven**;
+      - Valida o código e gera o arquivo `.jar` da aplicação.
+
+3- **Pipeline de CD (Continuous Delivery)**
+      - Após o CI ser concluído com sucesso, o CD realiza o **deploy automático** no **Azure Web App**;
+      - As variáveis de ambiente e credenciais do banco de dados são configuradas no App Service;
+      - O novo build é disponibilizado automaticamente na URL pública.
+
+4- **Azure Boards**
+      - Gerencia as **Sprints**, **tarefas** e **backlog**, integrando o fluxo de trabalho ágil ao pipeline CI/CD.
+
+> 💡 **Vantagens**: automação completa, integração com controle de versão, histórico de builds e deploys e rastreabilidade entre código e tarefas do projeto.
+
+### ⚙️ Opção 2 – Deploy Manual via Azure CLI
+
+Para ambientes de teste ou aprendizado, é possível realizar o deploy manualmente via **Azure CLI**.
+
+#### 1️⃣ Conferir a Versão do JDK
 
 Antes de gerar o build, é importante garantir que o projeto esteja rodando com o **JDK 17** (necessário para o deploy no App Service).
 
@@ -256,7 +291,7 @@ No **IntelliJ IDEA**:
 
 ⚠️ Caso o JDK 21 ou outra versão esteja como padrão, altere para **17** para evitar erros de compatibilidade no build e no deploy.
 
-### 5️⃣ Criar o App Service
+#### 2️⃣ Criar o App Service
 
 1. Configurar variáveis de ambiente na **máquina local**:
 
@@ -312,11 +347,13 @@ https://mototrack-app.azurewebsites.net
 
 ## 📹 Demonstração em Vídeo
 
-Para ver o **MotoTrack MVC Java** em funcionamento na **Azure**, assista ao vídeo abaixo, que mostra o **passo a passo completo de criação, configuração e teste do projeto na nuvem**:
+Para visualizar o **MotoTrack MVC Java** em funcionamento na **Azure**, assista aos vídeos abaixo — cada um demonstra um método diferente de deploy:
 
-🎥 [Assista à demonstração completa](https://www.youtube.com/watch?v=BvK2NWAhHi4)
+### ⚙️ Opção 1 – Deploy Manual via Azure CLI
 
-No vídeo, você verá:
+🎥 [Deploy Manual via Azure CLI](https://www.youtube.com/watch?v=BvK2NWAhHi4)
+
+Neste vídeo, é mostrado o **passo a passo completo de criação e configuração na nuvem**, incluindo:
 
 - Como **criar o banco de dados PostgreSQL** na Azure
 - Configuração do **App Service** e variáveis de ambiente
@@ -327,4 +364,22 @@ No vídeo, você verá:
   - Cadastro, listagem e exclusão de movimentações e alertas
 - Navegação pelas telas do sistema diretamente pelo navegador, mostrando que o projeto está rodando na nuvem
 
-> ⚠️ Lembre-se: para acompanhar o vídeo e testar o projeto, o banco PostgreSQL e o App Service precisam estar ativos e configurados corretamente conforme o passo a passo.
+### 🚀 Opção 2 – Deploy Automatizado via CI/CD (Azure DevOps)
+
+🎥 [Deploy Automatizado via CI/CD (Azure DevOps)](https://www.youtube.com/watch?v=BvK2NWAhHi4)
+
+Este vídeo apresenta o processo de **integração e entrega contínua (CI/CD)** configurado no **Azure DevOps**, com:
+
+- Como **criar o banco de dados PostgreSQL** na Azure
+- Configuração do **App Service** e variáveis de ambiente
+- Envio de código para o **Azure Repos**
+- Execução automática do **pipeline de build (CI)**
+- **Publicação automatizada** no **App Service (CD)**
+- Testes das principais funcionalidades:
+  - Login e cadastro de usuários (admin e comum)
+  - Cadastro, edição, listagem e exclusão de motos
+  - Cadastro, listagem e exclusão de movimentações e alertas
+- Navegação pelas telas do sistema diretamente pelo navegador, mostrando que o projeto está rodando na nuvem
+
+
+> ⚠️ **Importante**: para acompanhar os vídeos e testar o projeto, o **banco PostgreSQL** e o **App Service** precisam estar **ativos e configurados previamente**, conforme o passo a passo da seção de deploy.
