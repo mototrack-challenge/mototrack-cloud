@@ -255,6 +255,26 @@ az postgres flexible-server show --resource-group MotoTrackRG --name mototrackdb
 O processo de deploy automatizado utiliza o **Azure DevOps** para integração e entrega contínua **(CI/CD)**.
 Essa abordagem é ideal para times que desejam manter **automatização**, **versionamento** e **rastreabilidade** durante o ciclo de desenvolvimento.
 
+#### 🔧 Etapas do Web App
+
+1. Criar um **App Service Plan**:
+
+```bash
+az appservice plan create --name MotoTrackPlan --resource-group MotoTrackRG --sku B1 --is-linux
+```
+
+2. Criar o **App Service com JDK 17**:
+
+```bash
+az webapp create --resource-group MotoTrackRG --plan MotoTrackPlan --name mototrack-app --runtime "JAVA:17-java17"
+```
+
+3. Configurar as **variáveis de ambiente do App Service**:
+
+```bash
+az webapp config appsettings set --resource-group MotoTrackRG --name mototrack-app --settings DB_URL="jdbc:postgresql://mototrackdbserver.postgres.database.azure.com:5432/mototrack" DB_USER="adminuser" DB_PASSWORD="MotoTrack123!"
+```
+
 #### 🔧 Etapas do Pipeline
 
 1- **Azure Repos**
