@@ -136,7 +136,7 @@ O deploy em cloud utilizou os seguintes recursos principais:
 
 ### 📐 Desenho da Arquitetura em Cloud
 
-![Desenho da arquitetura](docs/Arquitetura-MotoTrack-v2.jpg)
+![Desenho da arquitetura](docs/Arquitetura-MotoTrack.jpg)
 
 ### ⚙️ Estrutura do Deploy e Automação (CI/CD)
 
