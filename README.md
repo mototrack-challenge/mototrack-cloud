@@ -386,7 +386,7 @@ Neste vídeo, é mostrado o **passo a passo completo de criação e configuraç�
 
 ### 🚀 Opção 2 – Deploy Automatizado via CI/CD (Azure DevOps)
 
-🎥 [Deploy Automatizado via CI/CD (Azure DevOps)](https://www.youtube.com/watch?v=BvK2NWAhHi4)
+🎥 [Deploy Automatizado via CI/CD (Azure DevOps)](https://www.youtube.com/watch?v=uoyx_WaY07k)
 
 Este vídeo apresenta o processo de **integração e entrega contínua (CI/CD)** configurado no **Azure DevOps**, com:
 
