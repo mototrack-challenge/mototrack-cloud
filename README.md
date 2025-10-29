@@ -160,6 +160,9 @@ Além da automação de deploy, o **Azure DevOps** também foi utilizado para a 
 
 - Essa integração entre **gestão ágil** e **CI/CD** garantiu um fluxo contínuo de desenvolvimento, testes e entrega de novas versões.
 
+**Link do Azure Boards:**
+👉 [Azure Boards - Sprint 4](https://dev.azure.com/RM555462/Sprint%204%20%E2%80%93%20Azure%20DevOps)
+
 ### 📝 Funcionalidades Disponíveis na Nuvem
 
 Na versão em cloud, o sistema mantém todas as funcionalidades do **MVC Java**:
